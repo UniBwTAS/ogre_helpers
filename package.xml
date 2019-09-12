@@ -1,0 +1,16 @@
+<package format="2">
+  <name>ogre_helpers</name>
+  <version>0.1.0</version>
+  <description>
+    Visualizes a "LidarObjectInstanceMsgList.msg" message
+  </description>
+  <maintainer email="andreas.reich@unibw.de">Andreas Reich</maintainer>
+  <license>TODO</license>
+
+  <author>Andreas Reich</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rviz</depend>
+  <depend>libqt5-gui</depend>
+</package>
