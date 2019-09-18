@@ -22,12 +22,14 @@ class ColorHelper
     size_t counter = -1;
 
   public:
-    QColor getColor(int i);
-    QColor getNextColor();
-    Ogre::ColourValue getOgreColor(int i);
-    Ogre::ColourValue getNextOgreColor();
-
+    size_t getColorListSize();
+    QColor getColorFromList(int i);
+    QColor getNextColorFromList();
+    Ogre::ColourValue getOgreColorFromList(int i);
+    Ogre::ColourValue getNextOgreColorFromList();
+    static Ogre::ColourValue getRainbowOgreColor(float value);
     static inline Ogre::ColourValue qtToOgre(const QColor& c);
+    static inline QColor ogreToQt(const Ogre::ColourValue& c);
 
     void resetCounter()
     {
@@ -45,9 +47,9 @@ class ColorMaterialHelper
 
   public:
     ColorHelper& getColorHelper();
-    std::string getMaterialName(int i);
-    size_t getNumMaterials();
-    void createColorMaterials();
+    std::string getMaterialNameFromList(int i);
+    size_t getMaterialNameListSize();
+    void createMaterialList();
     static void
     createColorMaterial(const std::string& name, const Ogre::ColourValue& color, bool use_self_illumination);
 };
