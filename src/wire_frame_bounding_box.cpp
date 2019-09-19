@@ -1,6 +1,3 @@
-#include <OgreStableHeaders.h>
-#include <OgreWireBoundingBox.h>
-
 #include <OgreCamera.h>
 #include <OgreHardwareBufferManager.h>
 #include <OgreSimpleRenderable.h>
