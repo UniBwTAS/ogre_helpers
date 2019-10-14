@@ -39,9 +39,7 @@ endif ()
 add_definitions(-DQT_NO_KEYWORDS)
 
 set(SRC_FILES
-    src/wire_frame_bounding_box.cpp
-    src/color_material_helper.cpp
-    src/frustum2d.cpp)
+    src/color_material_helper.cpp)
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
 
