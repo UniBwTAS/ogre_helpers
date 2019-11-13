@@ -13,45 +13,29 @@ namespace rviz
 
 class ColorHelper
 {
-  public:
-    ColorHelper();
-    std::vector<QColor> color_values_;
-    std::vector<std::string> color_names_;
+  private:
+    static std::vector<QColor> color_values_;
+    static std::vector<std::string> color_names_;
+
+    static std::vector<std::string> color_material_names_;
 
   private:
-    size_t counter = -1;
+    static void initColorList();
+    static void initColorMaterialList();
 
   public:
-    size_t getColorListSize();
-    QColor getColorFromList(int i);
-    QColor getNextColorFromList();
-    Ogre::ColourValue getOgreColorFromList(int i);
-    Ogre::ColourValue getNextOgreColorFromList();
+    static size_t getColorListSize();
+    static QColor getColorFromList(int i);
+    static Ogre::ColourValue getOgreColorFromList(int i);
     static Ogre::ColourValue getRainbowOgreColor(float value);
-    static inline Ogre::ColourValue qtToOgre(const QColor& c);
-    static inline QColor ogreToQt(const Ogre::ColourValue& c);
+    static Ogre::ColourValue qtToOgre(const QColor& c);
+    static QColor ogreToQt(const Ogre::ColourValue& c);
 
-    void resetCounter()
-    {
-        counter = -1;
-    }
-};
-
-class ColorMaterialHelper
-{
-  private:
-    ColorHelper color_helper;
-
-  public:
-    std::vector<std::string> color_names_;
-
-  public:
-    ColorHelper& getColorHelper();
-    std::string getMaterialNameFromList(int i);
-    size_t getMaterialNameListSize();
-    void createMaterialList();
+    static std::string getColorMaterialNameFromList(int i, bool use_self_illumination);
+    static size_t getColorMaterialNameListSize();
     static void
     createColorMaterial(const std::string& name, const Ogre::ColourValue& color, bool use_self_illumination);
+    static std::string createColorMaterial(const Ogre::ColourValue& color, bool use_self_illumination);
 };
 
 } // namespace rviz

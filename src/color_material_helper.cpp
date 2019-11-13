@@ -1,6 +1,7 @@
 
 #include <OgreColourValue.h>
 #include <OgreMaterialManager.h>
+#include <OgreTechnique.h>
 #include <rviz/ogre_helpers/color_material_helper.h>
 
 #include <cmath>
@@ -8,7 +9,11 @@
 namespace rviz
 {
 
-ColorHelper::ColorHelper()
+std::vector<QColor> ColorHelper::color_values_;
+std::vector<std::string> ColorHelper::color_names_;
+std::vector<std::string> ColorHelper::color_material_names_;
+
+void ColorHelper::initColorList()
 {
     color_values_.emplace_back(QColor("red"));
     color_values_.emplace_back(QColor("green"));
@@ -37,29 +42,29 @@ ColorHelper::ColorHelper()
 
 size_t ColorHelper::getColorListSize()
 {
+    if (color_values_.empty())
+    {
+        initColorList();
+    }
     return color_values_.size();
 }
 
 QColor ColorHelper::getColorFromList(int i)
 {
+    if (color_values_.empty())
+    {
+        initColorList();
+    }
     return color_values_[i];
-}
-
-QColor ColorHelper::getNextColorFromList()
-{
-    counter = (counter + 1) % color_values_.size();
-    return color_values_[counter];
 }
 
 Ogre::ColourValue ColorHelper::getOgreColorFromList(int i)
 {
+    if (color_values_.empty())
+    {
+        initColorList();
+    }
     return qtToOgre(color_values_[i]);
-}
-
-Ogre::ColourValue ColorHelper::getNextOgreColorFromList()
-{
-    counter = (counter + 1) % color_values_.size();
-    return qtToOgre(color_values_[counter]);
 }
 
 Ogre::ColourValue ColorHelper::getRainbowOgreColor(float value)
@@ -103,9 +108,19 @@ QColor ColorHelper::ogreToQt(const Ogre::ColourValue& c)
             static_cast<int>(c.a * 255.f)};
 }
 
-void ColorMaterialHelper::createColorMaterial(const std::string& name,
-                                              const Ogre::ColourValue& color,
-                                              bool use_self_illumination)
+std::string ColorHelper::createColorMaterial(const Ogre::ColourValue& color, bool use_self_illumination)
+{
+    std::stringstream ss;
+    ss << "TempColor/" << color.r << "_" << color.g << "_" << color.b << "_" << color.a;
+    std::string name = ss.str();
+    createColorMaterial(name, color, use_self_illumination);
+
+    return name;
+}
+
+void ColorHelper::createColorMaterial(const std::string& name,
+                                      const Ogre::ColourValue& color,
+                                      bool use_self_illumination)
 {
 
     if (Ogre::MaterialManager::getSingleton().resourceExists(name))
@@ -124,30 +139,54 @@ void ColorMaterialHelper::createColorMaterial(const std::string& name,
     mat->setReceiveShadows(false);
 }
 
-void ColorMaterialHelper::createMaterialList()
+void ColorHelper::initColorMaterialList()
 {
-    for (size_t i = 0; i < color_helper.color_values_.size(); i++)
+    if (color_values_.empty())
+    {
+        initColorList();
+    }
+
+    for (size_t i = 0; i < color_values_.size(); i++)
     {
         std::stringstream ss;
-        ss << "Custom/" << color_helper.color_names_[i];
-        createColorMaterial(ss.str(), color_helper.getOgreColorFromList(i), true);
-        color_names_.push_back(ss.str());
+        ss << "ColorMaterialList/" << color_names_[i];
+        createColorMaterial(ss.str(), getOgreColorFromList(i), true);
+        color_material_names_.push_back(ss.str());
+    }
+    for (size_t i = 0; i < color_values_.size(); i++)
+    {
+        std::stringstream ss;
+        ss << "ColorMaterialList/" << color_names_[i] << "_shaded";
+        createColorMaterial(ss.str(), getOgreColorFromList(i), false);
+        color_material_names_.push_back(ss.str());
     }
 }
 
-ColorHelper& ColorMaterialHelper::getColorHelper()
+std::string ColorHelper::getColorMaterialNameFromList(int i, bool use_self_illumination)
 {
-    return color_helper;
+    if (color_material_names_.empty())
+    {
+        initColorMaterialList();
+    }
+
+    if (use_self_illumination)
+    {
+        return color_material_names_[i];
+    }
+    else
+    {
+        return color_material_names_[i + color_material_names_.size() / 2];
+    }
 }
 
-std::string ColorMaterialHelper::getMaterialNameFromList(int i)
+size_t ColorHelper::getColorMaterialNameListSize()
 {
-    return color_names_[i];
-}
+    if (color_material_names_.empty())
+    {
+        initColorMaterialList();
+    }
 
-size_t ColorMaterialHelper::getMaterialNameListSize()
-{
-    return color_names_.size();
+    return color_material_names_.size() / 2;
 }
 
 }
