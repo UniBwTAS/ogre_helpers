@@ -112,6 +112,10 @@ std::string ColorHelper::createColorMaterial(const Ogre::ColourValue& color, boo
 {
     std::stringstream ss;
     ss << "TempColor/" << color.r << "_" << color.g << "_" << color.b << "_" << color.a;
+    if (!use_self_illumination)
+    {
+        ss << "_shaded";
+    }
     std::string name = ss.str();
     createColorMaterial(name, color, use_self_illumination);
 
@@ -189,4 +193,4 @@ size_t ColorHelper::getColorMaterialNameListSize()
     return color_material_names_.size() / 2;
 }
 
-}
+} // namespace rviz
