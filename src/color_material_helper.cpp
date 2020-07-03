@@ -132,7 +132,8 @@ void ColorHelper::createColorMaterial(const std::string& name,
         return;
     }
 
-    Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton().create(name, "rviz");
+    Ogre::MaterialPtr mat =
+        Ogre::MaterialManager::getSingleton().create(name, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
     mat->setAmbient(color * 0.5f);
     mat->setDiffuse(color);
     if (use_self_illumination)
