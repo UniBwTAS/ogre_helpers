@@ -10,34 +10,17 @@ namespace rviz
 {
 
 std::vector<QColor> ColorHelper::color_values_;
-std::vector<std::string> ColorHelper::color_names_;
+QStringList ColorHelper::color_names_;
 std::vector<std::string> ColorHelper::color_material_names_;
 
 void ColorHelper::initColorList()
 {
-    color_values_.emplace_back(QColor("red"));
-    color_values_.emplace_back(QColor("green"));
-    color_values_.emplace_back(QColor("blue"));
-    color_values_.emplace_back(QColor("yellow"));
-    color_values_.emplace_back(QColor("cyan"));
-    color_values_.emplace_back(QColor("magenta"));
-    color_values_.emplace_back(QColor("darkRed"));
-    color_values_.emplace_back(QColor("darkCyan"));
-    color_values_.emplace_back(QColor("darkMagenta"));
-    color_values_.emplace_back(QColor("darkGreen"));
-    color_values_.emplace_back(QColor("orange"));
+    color_names_ = QColor::colorNames();
 
-    color_names_.emplace_back("Red");
-    color_names_.emplace_back("Green");
-    color_names_.emplace_back("Blue");
-    color_names_.emplace_back("Yellow");
-    color_names_.emplace_back("Cyan");
-    color_names_.emplace_back("Magenta");
-    color_names_.emplace_back("Darkred");
-    color_names_.emplace_back("Darkcyan");
-    color_names_.emplace_back("Darkmagenta");
-    color_names_.emplace_back("Darkgreen");
-    color_names_.emplace_back("Orange");
+    for (const QString& name : color_names_)
+    {
+        color_values_.emplace_back(name);
+    }
 }
 
 size_t ColorHelper::getColorListSize()
@@ -154,14 +137,14 @@ void ColorHelper::initColorMaterialList()
     for (size_t i = 0; i < color_values_.size(); i++)
     {
         std::stringstream ss;
-        ss << "ColorMaterialList/" << color_names_[i];
+        ss << "ColorMaterialList/" << color_names_[i].toStdString();
         createColorMaterial(ss.str(), getOgreColorFromList(i), true);
         color_material_names_.push_back(ss.str());
     }
     for (size_t i = 0; i < color_values_.size(); i++)
     {
         std::stringstream ss;
-        ss << "ColorMaterialList/" << color_names_[i] << "_shaded";
+        ss << "ColorMaterialList/" << color_names_[i].toStdString() << "_shaded";
         createColorMaterial(ss.str(), getOgreColorFromList(i), false);
         color_material_names_.push_back(ss.str());
     }
