@@ -15,7 +15,7 @@ class ColorHelper
 {
   private:
     static std::vector<QColor> color_values_;
-    static std::vector<std::string> color_names_;
+    static QStringList color_names_;
 
     static std::vector<std::string> color_material_names_;
 
