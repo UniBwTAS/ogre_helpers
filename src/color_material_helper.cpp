@@ -125,6 +125,12 @@ void ColorHelper::createColorMaterial(const std::string& name,
     }
     mat->setLightingEnabled(true);
     mat->setReceiveShadows(false);
+
+    if (color.a < 0.9998)
+    {
+        mat->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+        mat->setDepthWriteEnabled(false);
+    }
 }
 
 void ColorHelper::initColorMaterialList()
