@@ -34,8 +34,8 @@ class ColorHelper
     static std::string getColorMaterialNameFromList(int i, bool use_self_illumination);
     static size_t getColorMaterialNameListSize();
     static void
-    createColorMaterial(const std::string& name, const Ogre::ColourValue& color, bool use_self_illumination);
-    static std::string createColorMaterial(const Ogre::ColourValue& color, bool use_self_illumination);
+    createColorMaterial(const std::string& name, const Ogre::ColourValue& color, bool use_self_illumination, bool ignore_culling = false);
+    static std::string createColorMaterial(const Ogre::ColourValue& color, bool use_self_illumination, bool ignore_culling = false);
 };
 
 } // namespace rviz

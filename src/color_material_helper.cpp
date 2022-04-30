@@ -91,7 +91,7 @@ QColor ColorHelper::ogreToQt(const Ogre::ColourValue& c)
             static_cast<int>(c.a * 255.f)};
 }
 
-std::string ColorHelper::createColorMaterial(const Ogre::ColourValue& color, bool use_self_illumination)
+std::string ColorHelper::createColorMaterial(const Ogre::ColourValue& color, bool use_self_illumination, bool ignore_culling)
 {
     std::stringstream ss;
     ss << "TempColor/" << color.r << "_" << color.g << "_" << color.b << "_" << color.a;
@@ -100,14 +100,15 @@ std::string ColorHelper::createColorMaterial(const Ogre::ColourValue& color, boo
         ss << "_shaded";
     }
     std::string name = ss.str();
-    createColorMaterial(name, color, use_self_illumination);
+    createColorMaterial(name, color, use_self_illumination, ignore_culling);
 
     return name;
 }
 
 void ColorHelper::createColorMaterial(const std::string& name,
                                       const Ogre::ColourValue& color,
-                                      bool use_self_illumination)
+                                      bool use_self_illumination,
+                                      bool ignore_culling)
 {
 
     if (Ogre::MaterialManager::getSingleton().resourceExists(name))
@@ -125,6 +126,10 @@ void ColorHelper::createColorMaterial(const std::string& name,
     }
     mat->setLightingEnabled(true);
     mat->setReceiveShadows(false);
+
+    if(ignore_culling){
+        mat->setCullingMode(Ogre::CULL_NONE);
+    }
 
     if (color.a < 0.9998)
     {
