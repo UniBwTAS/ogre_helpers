@@ -19,6 +19,8 @@ void ColorHelper::initColorList()
 
     for (const QString& name : color_names_)
     {
+        if (name == "transparent")
+            continue;
         color_values_.emplace_back(name);
     }
 }
