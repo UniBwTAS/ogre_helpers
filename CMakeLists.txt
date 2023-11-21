@@ -54,5 +54,5 @@ install(TARGETS ${PROJECT_NAME}
         )
 
 # Mark cpp header files for installation
-install(DIRECTORY include/rviz/${PROJECT_NAME}/
+install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})

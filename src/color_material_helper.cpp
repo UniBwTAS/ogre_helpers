@@ -2,7 +2,7 @@
 #include <OgreColourValue.h>
 #include <OgreMaterialManager.h>
 #include <OgreTechnique.h>
-#include <rviz/ogre_helpers/color_material_helper.h>
+#include <ogre_helpers/color_material_helper.h>
 
 #include <cmath>
 
